@@ -26,6 +26,15 @@ public class User implements Serializable {
     private MerchantType merchantType;
     public User(){}
 
+    public long getId() {
+        return id;
+    }
+
+    public void setId(long id) {
+        this.id = id;
+    }
+
+    @Column(nullable = false)
     public String getFirstName() {
         return firstName;
     }
@@ -42,8 +51,8 @@ public class User implements Serializable {
         this.lastName = lastName;
     }
 
-    public String getMobileNumber() {
-        return mobileNumber;
+    public String getMobileNumber(String mobileNumber) {
+        return this.mobileNumber;
     }
 
     public void setMobileNumber(String mobileNumber) {

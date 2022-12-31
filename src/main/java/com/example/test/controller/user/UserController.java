@@ -1,7 +1,9 @@
 package com.example.test.controller.user;
 
-import com.example.test.constants.user.Constants;
-import com.example.test.enums.user.MerchantType;
+import com.example.test.dao.request.user.CreateUserRequestDao;
+import com.example.test.dao.request.user.UserMerchantTypeAndPhoneRequestDao;
+import com.example.test.dao.response.user.CreateUserResponseDao;
+import com.example.test.dao.response.user.UserMerchantTypeAndPhoneResponseDao;
 import com.example.test.exceptions.user.MerchantPhoneAlreadyExistsException;
 import com.example.test.exceptions.user.UserConstraintException;
 import com.example.test.exceptions.user.UserNotFoundException;
@@ -33,29 +35,32 @@ public class UserController {
         return ResponseEntity.status(400).body(null);
     }
 
-    @GetMapping("/{merchantType}/{phone}")
-    public ResponseEntity<User> findUserById(@PathVariable(value = "merchantType") MerchantType merchantType,
-                                             @PathVariable(value = "phone") String phone) {
-        User user;
+    @GetMapping("/getUserByMerchantTypeAndPhone")
+    public ResponseEntity<UserMerchantTypeAndPhoneResponseDao> getUserByMerchantTypeAndPhone(
+            @Validated @RequestBody UserMerchantTypeAndPhoneRequestDao userMerchantTypeAndPhoneRequestDao) {
+        UserMerchantTypeAndPhoneResponseDao userMerchantTypeAndPhoneResponseDao;
         try {
-            user = userService.getUser(phone, merchantType);
+            userMerchantTypeAndPhoneResponseDao = userService.getUser(userMerchantTypeAndPhoneRequestDao);
         } catch (UserNotFoundException unfe) {
             return ResponseEntity.notFound().build();
         }
 
-        return ResponseEntity.ok().body(user);
+        return ResponseEntity.ok().body(userMerchantTypeAndPhoneResponseDao);
     }
 
     @PostMapping
-    public ResponseEntity<String> saveUser(@Validated @RequestBody User user) {
+    public ResponseEntity<CreateUserResponseDao> saveUser(
+            @Validated @RequestBody CreateUserRequestDao createUserRequestDao) {
+        CreateUserResponseDao createUserResponseDao;
+
         try {
-            userService.saveNewUser(user);
+            createUserResponseDao = userService.saveNewUser(createUserRequestDao);
         } catch (UserConstraintException uce) {
-            return (ResponseEntity<String>) ResponseEntity.badRequest().body(uce.getMessage());
+            return (ResponseEntity<CreateUserResponseDao>) ResponseEntity.badRequest();
         } catch (MerchantPhoneAlreadyExistsException mpaee) {
-            return (ResponseEntity<String>) ResponseEntity.badRequest().body(mpaee.getMessage());
+            return (ResponseEntity<CreateUserResponseDao>) ResponseEntity.badRequest();
         }
 
-        return (ResponseEntity<String>) ResponseEntity.ok(Constants.ResponseConstants.USER_CREATED);
+        return (ResponseEntity<CreateUserResponseDao>) ResponseEntity.ok(createUserResponseDao);
     }
 }
