@@ -1,10 +1,11 @@
 package com.example.test.controller.user;
 
 import com.example.test.constants.user.Constants;
+import com.example.test.enums.user.MerchantType;
 import com.example.test.exceptions.user.MerchantPhoneAlreadyExistsException;
 import com.example.test.exceptions.user.UserConstraintException;
+import com.example.test.exceptions.user.UserNotFoundException;
 import com.example.test.model.user.User;
-import com.example.test.repository.user.UserRepository;
 import com.example.test.service.user.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -12,16 +13,14 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/v1/user")
 public class UserController {
     @Autowired
     private UserService userService;
-    @Autowired
-    private UserRepository userRepository;
 
+//    TODO: Remove after testing or introduce security access for end points
     @GetMapping()
     public ResponseEntity<List<User>> getAllUsers() {
         try {
@@ -34,15 +33,17 @@ public class UserController {
         return ResponseEntity.status(400).body(null);
     }
 
-    @GetMapping("/{id}")
-    public ResponseEntity<User> findUserById(@PathVariable(value = "id") long id) {
-        Optional<User> user = userRepository.findById(id);
-
-        if(user.isPresent()) {
-            return ResponseEntity.ok().body(user.get());
-        } else {
+    @GetMapping("/{merchantType}/{phone}")
+    public ResponseEntity<User> findUserById(@PathVariable(value = "merchantType") MerchantType merchantType,
+                                             @PathVariable(value = "phone") String phone) {
+        User user;
+        try {
+            user = userService.getUser(phone, merchantType);
+        } catch (UserNotFoundException unfe) {
             return ResponseEntity.notFound().build();
         }
+
+        return ResponseEntity.ok().body(user);
     }
 
     @PostMapping

@@ -6,6 +6,8 @@ public final class Constants {
                 "MerchantAlreadyExist: %s with phone number %s already exists.";
         public static final String USER_MODEL_CONSTRAINT_EXCEPTION_MESSAGE =
                 "UserConstraintViolation: %s violates table constraints, {%s}.";
+        public static final String USER_WITH_MERCHANT_AND_PHONE_NOT_FOUNT_MESSAGE =
+                "UserWithIdNotFound: %s with user phone %s not found.";
     }
 
     public static final class ResponseConstants {
