@@ -5,6 +5,18 @@ public class UserMerchantTypeAndPhoneResponseDao {
     private String firstName;
     private String email;
 
+    public Long getUserId() {
+        return userId;
+    }
+
+    public String getFirstName() {
+        return firstName;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
     public UserMerchantTypeAndPhoneResponseDao() {}
 
     public void setUserId(Long userId) {

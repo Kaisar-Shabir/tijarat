@@ -9,7 +9,6 @@ import java.io.Serializable;
 @Table(name = "user",
         uniqueConstraints = {
                             @UniqueConstraint(columnNames = {"mobileNumber", "MerchantType"}),
-                            @UniqueConstraint(columnNames = {"email", "MerchantType"}),
                             @UniqueConstraint(columnNames = {"email"})
 })
 public class User implements Serializable {
@@ -51,7 +50,7 @@ public class User implements Serializable {
         this.lastName = lastName;
     }
 
-    public String getMobileNumber(String mobileNumber) {
+    public String getMobileNumber() {
         return this.mobileNumber;
     }
 

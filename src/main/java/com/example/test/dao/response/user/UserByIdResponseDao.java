@@ -1,27 +1,22 @@
-package com.example.test.dao.request.user;
+package com.example.test.dao.response.user;
 
 import com.example.test.enums.user.MerchantType;
 
-
-public class CreateUserRequestDao {
+public class UserByIdResponseDao {
     private String firstName;
-    private String lastName;
-    private String mobileNumber;
+    private String phone;
     private String email;
     private MerchantType merchantType;
 
-    public CreateUserRequestDao() {}
+    public UserByIdResponseDao() {
+    }
 
     public String getFirstName() {
         return firstName;
     }
 
-    public String getLastName() {
-        return lastName;
-    }
-
-    public String getMobileNumber() {
-        return mobileNumber;
+    public String getPhone() {
+        return phone;
     }
 
     public String getEmail() {
@@ -36,12 +31,8 @@ public class CreateUserRequestDao {
         this.firstName = firstName;
     }
 
-    public void setLastName(String lastName) {
-        this.lastName = lastName;
-    }
-
-    public void setMobileNumber(String mobileNumber) {
-        this.mobileNumber = mobileNumber;
+    public void setPhone(String phone) {
+        this.phone = phone;
     }
 
     public void setEmail(String email) {
